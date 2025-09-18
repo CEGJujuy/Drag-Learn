@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Drag-Learn - Juego Educativo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1 class="game-title">🎯 Drag-Learn</h1>
+            <div class="stats">
+                <div class="stat-item correct">
+                    <span class="stat-icon">✅</span>
+                    <span class="stat-value" id="correct-count">0</span>
+                </div>
+                <div class="stat-item incorrect">
+                    <span class="stat-icon">❌</span>
+                    <span class="stat-value" id="incorrect-count">0</span>
+                </div>
+                <div class="stat-item score">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value" id="score">0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Level Selection -->
+        <div class="level-selection" id="level-selection">
+            <h2>🌟 Elige tu aventura</h2>
+            <div class="levels-grid">
+                <button class="level-btn" data-level="recycling">
+                    <div class="level-icon">♻️</div>
+                    <div class="level-title">Reciclaje</div>
+                    <div class="level-description">Separa lo reciclable</div>
+                </button>
+                <button class="level-btn" data-level="food">
+                    <div class="level-icon">🍎</div>
+                    <div class="level-title">Alimentación</div>
+                    <div class="level-description">Saludable vs No saludable</div>
+                </button>
+                <button class="level-btn" data-level="body">
+                    <div class="level-icon">👤</div>
+                    <div class="level-title">Cuerpo Humano</div>
+                    <div class="level-description">Partes del cuerpo</div>
+                </button>
+                <button class="level-btn" data-level="animals">
+                    <div class="level-icon">🐾</div>
+                    <div class="level-title">Animales</div>
+                    <div class="level-description">Hábitats naturales</div>
+                </button>
+                <button class="level-btn" data-level="colors">
+                    <div class="level-icon">🎨</div>
+                    <div class="level-title">Colores</div>
+                    <div class="level-description">Colores primarios y secundarios</div>
+                </button>
+                <button class="level-btn" data-level="shapes">
+                    <div class="level-icon">🔷</div>
+                    <div class="level-title">Formas</div>
+                    <div class="level-description">Figuras geométricas</div>
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div class="game-area" id="game-area" style="display: none;">
+            <div class="game-header-playing">
+                <button class="back-btn" id="back-btn">← Volver</button>
+                <h2 class="level-title-playing" id="level-title-playing"></h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+            </div>
+
+            <div class="game-instruction" id="game-instruction"></div>
+
+            <div class="game-content">
+                <!-- Items to drag -->
+                <div class="items-container" id="items-container">
+                    <h3>Arrastra los elementos:</h3>
+                    <div class="draggable-items" id="draggable-items"></div>
+                </div>
+
+                <!-- Drop zones -->
+                <div class="categories-container" id="categories-container">
+                    <h3>A sus categorías:</h3>
+                    <div class="drop-zones" id="drop-zones"></div>
+                </div>
+            </div>
+
+            <!-- Feedback -->
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <!-- Results Modal -->
+        <div class="modal" id="results-modal">
+            <div class="modal-content">
+                <h2>🎉 ¡Nivel Completado!</h2>
+                <div class="results-stats">
+                    <div class="result-stat">
+                        <span class="result-icon">✅</span>
+                        <span class="result-label">Correctas:</span>
+                        <span class="result-value" id="final-correct">0</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-icon">❌</span>
+                        <span class="result-label">Incorrectas:</span>
+                        <span class="result-value" id="final-incorrect">0</span>
+                    </div>
+                    <div class="result-stat">
+                        <span class="result-icon">⭐</span>
+                        <span class="result-label">Puntuación:</span>
+                        <span class="result-value" id="final-score">0</span>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn btn-primary" id="play-again-btn">🔄 Jugar de nuevo</button>
+                    <button class="btn btn-secondary" id="choose-level-btn">🏠 Elegir nivel</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Modal -->
+        <div class="modal" id="stats-modal">
+            <div class="modal-content">
+                <h2>📊 Estadísticas</h2>
+                <div class="stats-content" id="stats-content"></div>
+                <button class="btn btn-secondary" id="close-stats-btn">Cerrar</button>
+            </div>
+        </div>
+
+        <!-- Settings Button -->
+        <button class="settings-btn" id="settings-btn">📊</button>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="correct-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+    <audio id="incorrect-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm1" type="audio/wav">
+    </audio>
+    <audio id="complete-sound" preload="auto">
+        <source src="data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT" type="audio/wav">
+    </audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
