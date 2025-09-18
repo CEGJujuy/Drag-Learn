@@ -123,7 +123,3 @@ Este proyecto es de código abierto y está disponible bajo la licencia MIT.
 ## 🤝 Contribuciones
 
 Las contribuciones son bienvenidas. Por favor, abre un issue o envía un pull request para mejoras o nuevas características.
-
----
-
-*Desarrollado con ❤️ para hacer el aprendizaje más divertido e interactivo.*
